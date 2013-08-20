@@ -5,6 +5,7 @@
 
 Firefox Install
 --------
+* addons.mozilla.org 安裝 [https://addons.mozilla.org/zh-TW/firefox/addon/newshelper-firefox/]
 * Firefox 瀏覽器安裝 [點此安裝最新版本](http://racklin.github.io/newshelper-firefox/newshelper-firefox.xpi)
 
 ScreenShot
