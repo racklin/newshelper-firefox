@@ -1,0 +1,32 @@
+{
+  "name": "newshelper-firefox",
+  "fullName": "newshelper-firefox",
+  "id": "newshelper-firefox@g0v.tw",
+  "description": "新聞小幫手 Firefox 版 ",
+  "author": "racklin@gmail.com",
+  "license": "CC0",
+  "version": "1.0.0",
+  "icon": "icon.png",
+  "icon64": "icon64.png",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/racklin/newshelper-firefox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/racklin/newshelper-firefox/issues"
+  },
+  "keywords": [
+    "firefox",
+    "newshelper"
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-watch": "~0.2.0",
+    "grunt-contrib-cssmin": "~0.4.1",
+    "grunt-contrib-concat": "~0.1.2",
+    "grunt-contrib-uglify": "~0.1.1",
+    "grunt-lsc": "~1.0",
+    "grunt-shell": "~0.3.1"
+  }
+
+}
