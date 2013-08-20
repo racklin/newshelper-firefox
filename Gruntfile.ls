@@ -24,6 +24,7 @@ module.exports = (grunt) ->
       data:
         files:
           \data/facebook.js : <[ data/facebook.ls ]>
+          \data/googleplus.js : <[ data/googleplus.ls ]>
 
 
     concat:

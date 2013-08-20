@@ -12,6 +12,9 @@ ScreenShot
 Facebook 誤導新聞提醒：
 ![Facebook](http://racklin.github.io/newshelper-firefox/screenshot1.png)
 
+Google+ 誤導新聞提醒：
+![Google+](http://racklin.github.io/newshelper-firefox/screenshot3.png)
+
 瀏覽誤導新聞網頁時提醒：
 ![Tab Browsing](http://racklin.github.io/newshelper-firefox/screenshot2.png)
 

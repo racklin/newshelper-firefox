@@ -7,6 +7,19 @@
     padding: 5px 0;
 }
 
+.newshelper-warning-googleplus {
+   background: hsl(50, 100%, 70%);
+   color: hsl(0, 0%, 20%);
+   font-size: medium;
+   text-align: center;
+   margin: 20px 0 10px 0;
+   padding: 0 0 10px 0;
+   min-height: 40px;
+   -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+           border-radius: 5px;
+}
+
 .newshelper-warning-facebook {
    background: hsl(50, 100%, 70%);
    color: hsl(0, 0%, 20%);
@@ -18,11 +31,15 @@
       -moz-border-radius: 5px;
            border-radius: 5px;
 }
- 
+
 .newshelper-description {
   display: block;
   font-size: small;
   margin-top: 5px;
+}
+
+.newshelper-description.googleplus {
+  margin-top: 20px;
 }
 
 .newshelper-description a {
@@ -33,8 +50,8 @@
 }
 
 .arrow-up {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
   border-bottom: 15px solid hsl(50, 100%, 70%);

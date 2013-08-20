@@ -14,48 +14,26 @@ let $ = jQuery
 
   buildWarningMessage = (options) ->
     """
-    <div class="newshelper-warning-facebook">
+    <div class="newshelper-warning-googleplus">
       <div class="arrow-up"></div>
       注意！您可能是<b>問題新聞</b>的受害者
-      <span class="newshelper-description">
+      <span class="newshelper-description googleplus">
     """ + $("<span></span>").append($("<a></a>").attr(
       href: options.link
       target: "_blank"
     ).text(options.title)).html() + "</span></div>"
 
 
-  censorFacebook = (baseNode) ->
-    # add warning message to a Facebook post if necessary
-    censorFacebookNode = (containerNode, titleText, linkHref) ->
-      matches = ("" + linkHref).match("^http://www.facebook.com/l.php\\?u=([^&]*)")
-      linkHref = decodeURIComponent(matches[1])  if matches
+  censorGooglePlus = (baseNode) ->
+    # add warning message to a GooglePlus post if necessary
+    censorGooglePlusNode = (containerNode, titleText, linkHref) ->
       containerNode = $(containerNode)
       if containerNode.hasClass(className)
         return
       else
         containerNode.addClass className
 
-      # 先看看是不是 uiStreamActionFooter, 表示是同一個新聞有多人分享, 那只要最上面加上就好了
-      addedAction = false
-      containerNode.parent("div[role=article]").find(".uiStreamActionFooter").each (idx, uiStreamSource) ->
-        $(uiStreamSource).find("li:first").append "· " + buildActionBar(
-          title: titleText
-          link: linkHref
-        )
-        addedAction = true
-
-
-      # 再看看單一動態，要加在 .uiStreamSource
-      unless addedAction
-        containerNode.parent("div[role=article]").find(".uiStreamSource").each (idx, uiStreamSource) ->
-          $($("<span></span>").html(buildActionBar(
-            title: titleText
-            link: linkHref
-          ))).insertBefore uiStreamSource
-
-          # should only have one uiStreamSource
-          console.error idx + titleText  unless idx is 0
-
+      # add to cache
       addContainerNodes titleText, linkHref, containerNode
 
       self.port.emit \logBrowsedLink, {linkHref, titleText}
@@ -63,29 +41,13 @@ let $ = jQuery
 
 
     # my timeline
-    $(baseNode).find(".uiStreamAttachments").each (idx, uiStreamAttachment) ->
+    $(baseNode).find(".ZpzDcd").each (idx, uiStreamAttachment) ->
       uiStreamAttachment = $(uiStreamAttachment)
-      unless uiStreamAttachment.hasClass("newshelper-checked")
-        titleText = uiStreamAttachment.find(".uiAttachmentTitle").text()
-        linkHref = uiStreamAttachment.find("a").attr("href")
-        censorFacebookNode uiStreamAttachment, titleText, linkHref
-
-
-    # others' timeline, fan page
-    $(baseNode).find(".shareUnit").each (idx, shareUnit) ->
-      shareUnit = $(shareUnit)
-      unless shareUnit.hasClass("newshelper-checked")
-        titleText = shareUnit.find(".fwb").text()
-        linkHref = shareUnit.find("a").attr("href")
-        censorFacebookNode shareUnit, titleText, linkHref
-
-
-    # post page (single post)
-    $ baseNode .find \._6kv .not \newshelper-checked .each (idx, userContent) ->
-      userContent = $(userContent)
-      titleText = userContent .find \.mbs .text!
-      linkHref = userContent .find \a .attr \href
-      censorFacebookNode userContent, titleText, linkHref
+      unless uiStreamAttachment.hasClass(className)
+        titleText = uiStreamAttachment.find("a.YF").text()
+        linkHref = uiStreamAttachment.find("a.YF").attr("href")
+        #console.log linkHref
+        censorGooglePlusNode uiStreamAttachment, titleText, linkHref
 
 
   buildActionBar = (options) ->
@@ -112,7 +74,7 @@ let $ = jQuery
       # So far, the value of mutation.target is always document.body.
       # Unless we want to do more fine-granted control, it is ok to pass document.body for now.
       throttle ->
-        censorFacebook document.body
+        censorGooglePlus document.body
       , 1000
 
     mutationObserver.observe mutationObserverConfig.target, mutationObserverConfig.config
@@ -129,7 +91,7 @@ let $ = jQuery
           link: report.report_link
         )
 
-    censorFacebook document.body
+    censorGooglePlus document.body
 
     # deal with changed DOMs (i.e. AJAX-loaded content)
     registerObserver()

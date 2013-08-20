@@ -1,6 +1,6 @@
 (function(){
   (function($){
-    var containerNodes, className, classNameAdded, addContainerNodes, buildWarningMessage, censorFacebook, buildActionBar, registerObserver;
+    var containerNodes, className, classNameAdded, addContainerNodes, buildWarningMessage, censorGooglePlus, buildActionBar, registerObserver;
     containerNodes = {};
     className = 'newshelper-checked';
     classNameAdded = 'newshelper-added';
@@ -16,44 +16,19 @@
       }
     };
     buildWarningMessage = function(options){
-      return "<div class=\"newshelper-warning-facebook\">\n  <div class=\"arrow-up\"></div>\n  注意！您可能是<b>問題新聞</b>的受害者\n  <span class=\"newshelper-description\">" + $("<span></span>").append($("<a></a>").attr({
+      return "<div class=\"newshelper-warning-googleplus\">\n  <div class=\"arrow-up\"></div>\n  注意！您可能是<b>問題新聞</b>的受害者\n  <span class=\"newshelper-description googleplus\">" + $("<span></span>").append($("<a></a>").attr({
         href: options.link,
         target: "_blank"
       }).text(options.title)).html() + "</span></div>";
     };
-    censorFacebook = function(baseNode){
-      var censorFacebookNode;
-      censorFacebookNode = function(containerNode, titleText, linkHref){
-        var matches, addedAction;
-        matches = ("" + linkHref).match("^http://www.facebook.com/l.php\\?u=([^&]*)");
-        if (matches) {
-          linkHref = decodeURIComponent(matches[1]);
-        }
+    censorGooglePlus = function(baseNode){
+      var censorGooglePlusNode;
+      censorGooglePlusNode = function(containerNode, titleText, linkHref){
         containerNode = $(containerNode);
         if (containerNode.hasClass(className)) {
           return;
         } else {
           containerNode.addClass(className);
-        }
-        addedAction = false;
-        containerNode.parent("div[role=article]").find(".uiStreamActionFooter").each(function(idx, uiStreamSource){
-          var addedAction;
-          $(uiStreamSource).find("li:first").append("· " + buildActionBar({
-            title: titleText,
-            link: linkHref
-          }));
-          return addedAction = true;
-        });
-        if (!addedAction) {
-          containerNode.parent("div[role=article]").find(".uiStreamSource").each(function(idx, uiStreamSource){
-            $($("<span></span>").html(buildActionBar({
-              title: titleText,
-              link: linkHref
-            }))).insertBefore(uiStreamSource);
-            if (idx !== 0) {
-              return console.error(idx + titleText);
-            }
-          });
         }
         addContainerNodes(titleText, linkHref, containerNode);
         self.port.emit('logBrowsedLink', {
@@ -65,30 +40,14 @@
           titleText: titleText
         });
       };
-      $(baseNode).find(".uiStreamAttachments").each(function(idx, uiStreamAttachment){
+      return $(baseNode).find(".ZpzDcd").each(function(idx, uiStreamAttachment){
         var titleText, linkHref;
         uiStreamAttachment = $(uiStreamAttachment);
-        if (!uiStreamAttachment.hasClass("newshelper-checked")) {
-          titleText = uiStreamAttachment.find(".uiAttachmentTitle").text();
-          linkHref = uiStreamAttachment.find("a").attr("href");
-          return censorFacebookNode(uiStreamAttachment, titleText, linkHref);
+        if (!uiStreamAttachment.hasClass(className)) {
+          titleText = uiStreamAttachment.find("a.YF").text();
+          linkHref = uiStreamAttachment.find("a.YF").attr("href");
+          return censorGooglePlusNode(uiStreamAttachment, titleText, linkHref);
         }
-      });
-      $(baseNode).find(".shareUnit").each(function(idx, shareUnit){
-        var titleText, linkHref;
-        shareUnit = $(shareUnit);
-        if (!shareUnit.hasClass("newshelper-checked")) {
-          titleText = shareUnit.find(".fwb").text();
-          linkHref = shareUnit.find("a").attr("href");
-          return censorFacebookNode(shareUnit, titleText, linkHref);
-        }
-      });
-      return $(baseNode).find('._6kv').not('newshelper-checked').each(function(idx, userContent){
-        var titleText, linkHref;
-        userContent = $(userContent);
-        titleText = userContent.find('.mbs').text();
-        linkHref = userContent.find('a').attr('href');
-        return censorFacebookNode(userContent, titleText, linkHref);
       });
     };
     buildActionBar = function(options){
@@ -121,7 +80,7 @@
       }();
       mutationObserver = new MutationObserver(function(mutations){
         return throttle(function(){
-          return censorFacebook(document.body);
+          return censorGooglePlus(document.body);
         }, 1000);
       });
       return mutationObserver.observe(mutationObserverConfig.target, mutationObserverConfig.config);
@@ -140,7 +99,7 @@
           }));
         }) : void 8 : void 8;
       });
-      censorFacebook(document.body);
+      censorGooglePlus(document.body);
       return registerObserver();
     })();
   }.call(this, jQuery));

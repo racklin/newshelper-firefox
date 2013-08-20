@@ -30,7 +30,8 @@
         },
         data: {
           files: {
-            'data/facebook.js': ['data/facebook.ls']
+            'data/facebook.js': ['data/facebook.ls'],
+            'data/googleplus.js': ['data/googleplus.ls']
           }
         }
       },
