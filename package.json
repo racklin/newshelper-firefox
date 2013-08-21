@@ -25,6 +25,7 @@
     "grunt-contrib-cssmin": "~0.4.1",
     "grunt-contrib-concat": "~0.1.2",
     "grunt-contrib-uglify": "~0.1.1",
+    "LiveScript": "~1.2.0",
     "grunt-lsc": "~1.0",
     "grunt-shell": "~0.3.1"
   }

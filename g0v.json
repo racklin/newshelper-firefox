@@ -1,0 +1,39 @@
+{
+  "author": "racklin",
+  "status": "beta",
+  "name": "newshelper-firefox",
+  "name_zh": "新聞小幫手 Firefox Extension",
+  "description": "newshelper-firefox: a firefox extension helps you to identify incorrect news",
+  "description_zh": "newshelper-firefox: 告訴你你正受到有害新聞所害",
+  "homepage": "http://newshelper.g0v.tw",
+  "document": "https://docs.google.com/spreadsheet/ccc?key=0AvCxAZD9rYXMdGFrSjBHb2IxTW5mSE5vQVhGaThiX3c",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/racklin/newshelper-firefox"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "keywords": [
+    "firefox",
+    "livescript",
+    "javascript",
+    "jquery"
+  ],
+  "audience": [
+    "public"
+  ],
+  "products": [
+    "extension"
+  ],
+  "projects": [
+    "新聞小幫手"
+  ],
+  "contributors": [
+  ],
+  "needs": [
+    "programmer"
+  ]
+}
