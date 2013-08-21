@@ -93,13 +93,17 @@ sync_report_data = ->
           check_recent_seen ret.data[i]
           i++
 
-      # 每一小時去檢查一次是否有更新
-      setTimeout sync_report_data, 3600000
+      # 每 10 分鐘去檢查一次是否有更新
+      setTimeout sync_report_data, 600000
   }).get!
 
 
+seen_link = {};
 log_browsed_link = (link, title) ->
   return  unless link
+
+  if seen_link[link] then return else seen_link[link] = true
+
   (opened_db) <- get_newshelper_db
   transaction = opened_db.transaction \read_news, \readwrite
   objectStore = transaction.objectStore \read_news
@@ -119,6 +123,11 @@ log_browsed_link = (link, title) ->
     index = objectStore.index \link
     get_request = index.get link
     get_request.onsuccess = ->
+
+      unless get_request.result
+        console.log "link= #link is not found in IndexedDB"
+        return
+
       # update last_seen_at
       put_request = objectStore.put do
         id: get_request.result.id

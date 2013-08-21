@@ -18,10 +18,10 @@ let $ = jQuery
       <div class="arrow-up"></div>
       注意！您可能是<b>問題新聞</b>的受害者
       <span class="newshelper-description googleplus">
-    """ + $("<span></span>").append($("<a></a>").attr(
+    """ + $(\<span></span>).append($(\<a></a>).attr(
       href: options.link
-      target: "_blank"
-    ).text(options.title)).html() + "</span></div>"
+      target: \_blank
+    ).text(options.title)).html() + \</span></div>
 
 
   censorGooglePlus = (baseNode) ->
@@ -41,13 +41,12 @@ let $ = jQuery
 
 
     # my timeline
-    $(baseNode).find(".ZpzDcd").each (idx, uiStreamAttachment) ->
+    $ baseNode .find \.ZpzDcd .not className .each (idx, uiStreamAttachment) ->
       uiStreamAttachment = $(uiStreamAttachment)
-      unless uiStreamAttachment.hasClass(className)
-        titleText = uiStreamAttachment.find("a.YF").text()
-        linkHref = uiStreamAttachment.find("a.YF").attr("href")
-        #console.log linkHref
-        censorGooglePlusNode uiStreamAttachment, titleText, linkHref
+      titleText = uiStreamAttachment.find \a.YF .text!
+      linkHref = uiStreamAttachment.find \a.YF .attr \href
+      #console.log linkHref
+      censorGooglePlusNode uiStreamAttachment, titleText, linkHref
 
 
   buildActionBar = (options) ->
@@ -55,14 +54,12 @@ let $ = jQuery
     url += "?news_link=" + encodeURIComponent(options.link) + "&news_title= " + encodeURIComponent(options.title)  if "undefined" isnt typeof (options.title) and "undefined" isnt typeof (options.link)
     "<a href=\"" + url + "\" target=\"_blank\">回報給新聞小幫手</a>"
 
+
+  target = document.getElementById \contentPane
+  config = { +attributes, +childList, +characterData, +subtree }
+
   registerObserver = ->
     MutationObserver = window.MutationObserver or window.WebKitMutationObserver
-    mutationObserverConfig =
-      target: document.getElementsByTagName(\body)[0]
-      config:
-        attributes: true
-        childList: true
-        characterData: true
 
     throttle = do ->
       var timer_
@@ -71,13 +68,17 @@ let $ = jQuery
         timer_ := setTimeout fn, wait
 
     mutationObserver = new MutationObserver (mutations) ->
-      # So far, the value of mutation.target is always document.body.
-      # Unless we want to do more fine-granted control, it is ok to pass document.body for now.
-      throttle ->
-        censorGooglePlus document.body
-      , 1000
+      hasNewNode = false
+      mutations.forEach (mutation, idx) ->
+        hasNewNode := true if mutation.type is \childList and mutation.addedNodes.length > 0
 
-    mutationObserver.observe mutationObserverConfig.target, mutationObserverConfig.config
+      if hasNewNode
+        throttle ->
+          censorGooglePlus document.body
+        , 1000
+
+    mutationObserver.observe target, config
+
 
   do ->
     # check callback
@@ -91,8 +92,13 @@ let $ = jQuery
           link: report.report_link
         )
 
-    censorGooglePlus document.body
-
-    # deal with changed DOMs (i.e. AJAX-loaded content)
-    registerObserver()
+    # The contentPane is filled via AJAX.
+    # Only need to call censorGooglePlus() after contentPane is present
+    timer_ = setInterval ->
+      target = document.getElementById \contentPane
+      if target
+        clearInterval timer_
+        censorGooglePlus target
+        registerObserver!
+    , 1000
 

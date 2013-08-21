@@ -1,6 +1,6 @@
 (function(){
   (function($){
-    var containerNodes, className, classNameAdded, addContainerNodes, buildWarningMessage, censorFacebook, buildActionBar, registerObserver;
+    var containerNodes, className, classNameAdded, addContainerNodes, buildWarningMessage, censorFacebook, buildActionBar, target, config, registerObserver, excludedPaths;
     containerNodes = {};
     className = 'newshelper-checked';
     classNameAdded = 'newshelper-added';
@@ -16,10 +16,10 @@
       }
     };
     buildWarningMessage = function(options){
-      return "<div class=\"newshelper-warning-facebook\">\n  <div class=\"arrow-up\"></div>\n  注意！您可能是<b>問題新聞</b>的受害者\n  <span class=\"newshelper-description\">" + $("<span></span>").append($("<a></a>").attr({
+      return "<div class=\"newshelper-warning-facebook\">\n  <div class=\"arrow-up\"></div>\n  注意！您可能是<b>問題新聞</b>的受害者\n  <span class=\"newshelper-description\">" + $('<span></span>').append($('<a></a>').attr({
         href: options.link,
-        target: "_blank"
-      }).text(options.title)).html() + "</span></div>";
+        target: '_blank'
+      }).text(options.title)).html() + '</span></div>';
     };
     censorFacebook = function(baseNode){
       var censorFacebookNode;
@@ -29,6 +29,10 @@
         if (matches) {
           linkHref = decodeURIComponent(matches[1]);
         }
+        matches = ('' + linkHref).match('(.*)[?&]fb_action_ids=.*');
+        if (matches) {
+          linkHref = matches[1];
+        }
         containerNode = $(containerNode);
         if (containerNode.hasClass(className)) {
           return;
@@ -36,23 +40,56 @@
           containerNode.addClass(className);
         }
         addedAction = false;
-        containerNode.parent("div[role=article]").find(".uiStreamActionFooter").each(function(idx, uiStreamSource){
+        containerNode.parent('div[role=article]').find('.uiStreamActionFooter').each(function(idx, uiStreamSource){
           var addedAction;
-          $(uiStreamSource).find("li:first").append("· " + buildActionBar({
+          $(uiStreamSource).find('li:first').append("· " + buildActionBar({
             title: titleText,
             link: linkHref
           }));
           return addedAction = true;
         });
         if (!addedAction) {
-          containerNode.parent("div[role=article]").find(".uiStreamSource").each(function(idx, uiStreamSource){
-            $($("<span></span>").html(buildActionBar({
+          containerNode.parent('div[role=article]').find('.uiStreamSource').each(function(idx, uiStreamSource){
+            var addedAction;
+            $($('<span></span>').html(buildActionBar({
               title: titleText,
               link: linkHref
             }))).insertBefore(uiStreamSource);
+            addedAction = true;
             if (idx !== 0) {
               return console.error(idx + titleText);
             }
+          });
+        }
+        if (!addedAction) {
+          containerNode.parent('div.storyInnerContent').find('.uiStreamSource').each(function(idx, uiStreamSource){
+            var addedAction;
+            $($('<span></span>').html(buildActionBar({
+              title: titleText,
+              link: linkHref
+            }) + ' · ')).insertBefore(uiStreamSource);
+            return addedAction = true;
+          });
+        }
+        if (!addedAction) {
+          containerNode.parent('div[role="article"]').siblings('.uiCommentContainer').find('.UIActionLinks').each(function(idx, uiStreamSource){
+            var addedAction;
+            $(uiStreamSource).append(' · ').append(buildActionBar({
+              title: titleText,
+              link: linkHref
+            }));
+            return addedAction = true;
+          });
+        }
+        if (!addedAction) {
+          containerNode.parent('._4q_').find('._6p-').find('._5ciy').find('._6j_').each(function(idx, shareAction){
+            var addedAction;
+            console.log(shareAction);
+            $($('<a class="_5cix"></a>').html(buildActionBar({
+              title: titleText,
+              link: linkHref
+            }))).insertAfter(shareAction);
+            return addedAction = true;
           });
         }
         addContainerNodes(titleText, linkHref, containerNode);
@@ -65,25 +102,21 @@
           titleText: titleText
         });
       };
-      $(baseNode).find(".uiStreamAttachments").each(function(idx, uiStreamAttachment){
+      $(baseNode).find('.uiStreamAttachments').not(className).each(function(idx, uiStreamAttachment){
         var titleText, linkHref;
         uiStreamAttachment = $(uiStreamAttachment);
-        if (!uiStreamAttachment.hasClass("newshelper-checked")) {
-          titleText = uiStreamAttachment.find(".uiAttachmentTitle").text();
-          linkHref = uiStreamAttachment.find("a").attr("href");
-          return censorFacebookNode(uiStreamAttachment, titleText, linkHref);
-        }
+        titleText = uiStreamAttachment.find('.uiAttachmentTitle').text();
+        linkHref = uiStreamAttachment.find('a').attr('href');
+        return censorFacebookNode(uiStreamAttachment, titleText, linkHref);
       });
-      $(baseNode).find(".shareUnit").each(function(idx, shareUnit){
+      $(baseNode).find('.shareUnit').not(className).each(function(idx, shareUnit){
         var titleText, linkHref;
         shareUnit = $(shareUnit);
-        if (!shareUnit.hasClass("newshelper-checked")) {
-          titleText = shareUnit.find(".fwb").text();
-          linkHref = shareUnit.find("a").attr("href");
-          return censorFacebookNode(shareUnit, titleText, linkHref);
-        }
+        titleText = shareUnit.find(".fwb").text();
+        linkHref = shareUnit.find('a').attr('href');
+        return censorFacebookNode(shareUnit, titleText, linkHref);
       });
-      return $(baseNode).find('._6kv').not('newshelper-checked').each(function(idx, userContent){
+      return $(baseNode).find('._6kv').not(className).each(function(idx, userContent){
         var titleText, linkHref;
         userContent = $(userContent);
         titleText = userContent.find('.mbs').text();
@@ -99,17 +132,16 @@
       }
       return "<a href=\"" + url + "\" target=\"_blank\">回報給新聞小幫手</a>";
     };
+    target = document.getElementById('contentArea');
+    config = {
+      attributes: true,
+      childList: true,
+      characterData: true,
+      subtree: true
+    };
     registerObserver = function(){
-      var MutationObserver, mutationObserverConfig, throttle, mutationObserver;
+      var MutationObserver, throttle, mutationObserver;
       MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-      mutationObserverConfig = {
-        target: document.getElementsByTagName('body')[0],
-        config: {
-          attributes: true,
-          childList: true,
-          characterData: true
-        }
-      };
       throttle = function(){
         var timer_;
         return function(fn, wait){
@@ -120,13 +152,24 @@
         };
       }();
       mutationObserver = new MutationObserver(function(mutations){
-        return throttle(function(){
-          return censorFacebook(document.body);
-        }, 1000);
+        var hasNewNode;
+        hasNewNode = false;
+        mutations.forEach(function(mutation, idx){
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            return hasNewNode = true;
+          }
+        });
+        if (hasNewNode) {
+          return throttle(function(){
+            return censorFacebook(target);
+          }, 1000);
+        }
       });
-      return mutationObserver.observe(mutationObserverConfig.target, mutationObserverConfig.config);
+      return mutationObserver.observe(target, config);
     };
+    excludedPaths = ['ai.php', 'generic.php'];
     (function(){
+      var excluded, timer_;
       self.port.on('checkReportResult', function(report){
         var ref$, ref1$;
         return (ref$ = containerNodes[report.linkHref]) != null ? (ref1$ = ref$.nodes) != null ? ref1$.forEach(function(containerNode){
@@ -140,8 +183,25 @@
           }));
         }) : void 8 : void 8;
       });
-      censorFacebook(document.body);
-      return registerObserver();
+      excluded = false;
+      excludedPaths.forEach(function(excludedPath, idx){
+        var excluded;
+        if (window.location.pathname.indexOf(excludedPath) !== -1) {
+          return excluded = true;
+        }
+      });
+      if (excluded) {
+        return;
+      }
+      return timer_ = setInterval(function(){
+        var target;
+        target = document.getElementById('contentArea');
+        if (target) {
+          clearInterval(timer_);
+          censorFacebook(target);
+          return registerObserver();
+        }
+      }, 1000);
     })();
   }.call(this, jQuery));
 }).call(this);

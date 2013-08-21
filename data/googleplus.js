@@ -1,6 +1,6 @@
 (function(){
   (function($){
-    var containerNodes, className, classNameAdded, addContainerNodes, buildWarningMessage, censorGooglePlus, buildActionBar, registerObserver;
+    var containerNodes, className, classNameAdded, addContainerNodes, buildWarningMessage, censorGooglePlus, buildActionBar, target, config, registerObserver;
     containerNodes = {};
     className = 'newshelper-checked';
     classNameAdded = 'newshelper-added';
@@ -16,10 +16,10 @@
       }
     };
     buildWarningMessage = function(options){
-      return "<div class=\"newshelper-warning-googleplus\">\n  <div class=\"arrow-up\"></div>\n  注意！您可能是<b>問題新聞</b>的受害者\n  <span class=\"newshelper-description googleplus\">" + $("<span></span>").append($("<a></a>").attr({
+      return "<div class=\"newshelper-warning-googleplus\">\n  <div class=\"arrow-up\"></div>\n  注意！您可能是<b>問題新聞</b>的受害者\n  <span class=\"newshelper-description googleplus\">" + $('<span></span>').append($('<a></a>').attr({
         href: options.link,
-        target: "_blank"
-      }).text(options.title)).html() + "</span></div>";
+        target: '_blank'
+      }).text(options.title)).html() + '</span></div>';
     };
     censorGooglePlus = function(baseNode){
       var censorGooglePlusNode;
@@ -40,14 +40,12 @@
           titleText: titleText
         });
       };
-      return $(baseNode).find(".ZpzDcd").each(function(idx, uiStreamAttachment){
+      return $(baseNode).find('.ZpzDcd').not(className).each(function(idx, uiStreamAttachment){
         var titleText, linkHref;
         uiStreamAttachment = $(uiStreamAttachment);
-        if (!uiStreamAttachment.hasClass(className)) {
-          titleText = uiStreamAttachment.find("a.YF").text();
-          linkHref = uiStreamAttachment.find("a.YF").attr("href");
-          return censorGooglePlusNode(uiStreamAttachment, titleText, linkHref);
-        }
+        titleText = uiStreamAttachment.find('a.YF').text();
+        linkHref = uiStreamAttachment.find('a.YF').attr('href');
+        return censorGooglePlusNode(uiStreamAttachment, titleText, linkHref);
       });
     };
     buildActionBar = function(options){
@@ -58,17 +56,16 @@
       }
       return "<a href=\"" + url + "\" target=\"_blank\">回報給新聞小幫手</a>";
     };
+    target = document.getElementById('contentPane');
+    config = {
+      attributes: true,
+      childList: true,
+      characterData: true,
+      subtree: true
+    };
     registerObserver = function(){
-      var MutationObserver, mutationObserverConfig, throttle, mutationObserver;
+      var MutationObserver, throttle, mutationObserver;
       MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-      mutationObserverConfig = {
-        target: document.getElementsByTagName('body')[0],
-        config: {
-          attributes: true,
-          childList: true,
-          characterData: true
-        }
-      };
       throttle = function(){
         var timer_;
         return function(fn, wait){
@@ -79,13 +76,23 @@
         };
       }();
       mutationObserver = new MutationObserver(function(mutations){
-        return throttle(function(){
-          return censorGooglePlus(document.body);
-        }, 1000);
+        var hasNewNode;
+        hasNewNode = false;
+        mutations.forEach(function(mutation, idx){
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            return hasNewNode = true;
+          }
+        });
+        if (hasNewNode) {
+          return throttle(function(){
+            return censorGooglePlus(document.body);
+          }, 1000);
+        }
       });
-      return mutationObserver.observe(mutationObserverConfig.target, mutationObserverConfig.config);
+      return mutationObserver.observe(target, config);
     };
     (function(){
+      var timer_;
       self.port.on('checkReportResult', function(report){
         var ref$, ref1$;
         return (ref$ = containerNodes[report.linkHref]) != null ? (ref1$ = ref$.nodes) != null ? ref1$.forEach(function(containerNode){
@@ -99,8 +106,15 @@
           }));
         }) : void 8 : void 8;
       });
-      censorGooglePlus(document.body);
-      return registerObserver();
+      return timer_ = setInterval(function(){
+        var target;
+        target = document.getElementById('contentPane');
+        if (target) {
+          clearInterval(timer_);
+          censorGooglePlus(target);
+          return registerObserver();
+        }
+      }, 1000);
     })();
   }.call(this, jQuery));
 }).call(this);
