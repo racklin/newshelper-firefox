@@ -18,6 +18,11 @@ Google+ 誤導新聞提醒：
 
 瀏覽誤導新聞網頁時提醒：
 ![Tab Browsing](http://racklin.github.io/newshelper-firefox/screenshot2.png)
+![Tab Browsing2](http://racklin.github.io/newshelper-firefox/screenshot5.png)
+
+回報問題網站：
+![Reporting Url](http://racklin.github.io/newshelper-firefox/screenshot4.png)
+
 
 Opera Install
 --------
