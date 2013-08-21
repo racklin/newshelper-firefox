@@ -195,7 +195,9 @@
       }
       return timer_ = setInterval(function(){
         var target;
-        target = document.getElementById('contentArea');
+        target = document.getElementById('contentArea' != null
+          ? 'contentArea'
+          : document.getElementById('content'));
         if (target) {
           clearInterval(timer_);
           censorFacebook(target);
