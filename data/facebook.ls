@@ -79,7 +79,7 @@ let $ = jQuery
       # 新版Timeline
       unless addedAction
         containerNode.parent(\._4q_).find(\._6p-).find(\._5ciy).find(\._6j_).each (idx, shareAction) ->
-          console.log shareAction
+          #console.log shareAction
           $($('<a class="_5cix"></a>').html(buildActionBar(
             title: titleText
             link: linkHref

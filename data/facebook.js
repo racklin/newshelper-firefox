@@ -84,7 +84,6 @@
         if (!addedAction) {
           containerNode.parent('._4q_').find('._6p-').find('._5ciy').find('._6j_').each(function(idx, shareAction){
             var addedAction;
-            console.log(shareAction);
             $($('<a class="_5cix"></a>').html(buildActionBar({
               title: titleText,
               link: linkHref
