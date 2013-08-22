@@ -5,9 +5,32 @@
   "description": "新聞小幫手 Firefox 版 ",
   "author": "racklin@gmail.com",
   "license": "CC0",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "icon": "icon.png",
   "icon64": "icon64.png",
+  "preferences": [
+    {
+        "name": "display_notification",
+        "title": "Display Desktop Notification",
+        "description": "Display Desktop Notification for incorrect news.",
+        "type": "bool",
+        "value": true
+    },
+    {
+        "name": "highlight_website",
+        "title": "Highlight incorrect news website",
+        "description": "Highlight incorrect news website",
+        "type": "bool",
+        "value": true
+    },
+    {
+        "name": "update_db_time",
+        "title": "Update Database time(second)",
+        "description": "Update Database time(second)",
+        "type": "integer",
+        "value": 600
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/racklin/newshelper-firefox.git"

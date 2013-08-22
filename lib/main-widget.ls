@@ -26,15 +26,11 @@ tabs.on 'ready', (tab) ->
   (res) <- check_report tab.title, tab.url
   last-active-tab-result <<< res
   newshelper-widget.contentURL = newshelper-widget-page-icon
-  tab.attach do
-    contentScript: 'document.body.style.border = "5px solid red";'
+  if prefs[\highlight_website]
+    tab.attach do
+      contentScript: 'document.body.style.border = "5px solid red";'
 
-  notifications.notify do
-    title: "注意！您可能是問題新聞的受害者"
-    text: res.report_title
-    data: res.report_link,
-    onClick: (data) ->
-      tabs.open data
+  showNotification "注意！您可能是問題新聞的受害者", res.report_title, res.report_link
 
 tabs.on \activate, (tab) ->
   #console.log "Tab activate #{tab.url}"

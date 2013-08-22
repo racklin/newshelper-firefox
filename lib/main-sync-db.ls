@@ -49,12 +49,8 @@ check_recent_seen = (report) ->
     # 如果已經被刪除了就跳過
     return if parseInt(get_request.result.deleted_at, 10)
 
-    notifications.notify do
-      title: \新聞小幫手提醒您
-      text: "您於 #{get_time_diff(get_request.result.last_seen_at)} 看的新聞「#{get_request.result.title}」 被人回報有錯誤：#{report.report_title}"
-      data: report.report_link
-      onClick: (data) ->
-        tabs.open data
+    showNotification \新聞小幫手提醒您, "您於 #{get_time_diff(get_request.result.last_seen_at)} 看的新聞「#{get_request.result.title}」 被人回報有錯誤：#{report.report_title}", report.report_link
+
 
 get_recent_report = (cb) ->
   (opened_db) <- get_newshelper_db
@@ -91,7 +87,8 @@ sync_report_data = ->
           i++
 
       # 每 10 分鐘去檢查一次是否有更新
-      setTimeout sync_report_data, 600000
+      update-db-time = prefs[\update_db-_ime] ? 600
+      setTimeout sync_report_data, update-db-time*1000
   }).get!
 
 

@@ -4,5 +4,4 @@ require! request.Request
 { Widget } = require \sdk/widget
 { Panel } = require \sdk/panel
 { setTimeout, clearTimeout} = require \timers
-
-
+{ prefs } = require \sdk/simple-prefs
