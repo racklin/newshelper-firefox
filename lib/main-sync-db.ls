@@ -1,10 +1,4 @@
-require! <[ self page-mod sdk/notifications sdk/tabs ]>
-require! request.Request
-{ indexedDB } = require \indexed-db
-{ Widget } = require \sdk/widget
-{ Panel } = require \sdk/panel
-{ setTimeout, clearTimeout} = require \timers
-
+# global opened_db handle
 opened_db = null
 
 get_time_diff = (time) ->
@@ -153,81 +147,4 @@ check_report = (title, url, cb) ->
 
 # start sync_report_data
 sync_report_data!
-
-
-# register facebook newshelper check
-pageMod.PageMod do
-  include: <[ https://www.facebook.com/* http://www.facebook.com/* ]>
-  contentScriptWhen: 'ready'
-  contentStyleFile: [self.data.url \content_style.css]
-  contentScriptFile: [self.data.url(\jquery-2.0.3.min.js), self.data.url(\facebook.js)]
-  onAttach: (worker) ->
-    worker.port.on \logBrowsedLink, (d) ->
-      log_browsed_link d.linkHref, d.titleText
-
-    worker.port.on \checkReport, (d) ->
-      check_report d.titleText, d.linkHref, (res) ->
-        res.linkHref = d.linkHref
-        worker.port.emit \checkReportResult, res
-
-# register google plus newshelper check
-pageMod.PageMod do
-  include: <[ https://plus.google.com/* http://plus.google.com/* ]>
-  contentScriptWhen: 'ready'
-  contentStyleFile: [self.data.url \content_style.css]
-  contentScriptFile: [self.data.url(\jquery-2.0.3.min.js), self.data.url(\googleplus.js)]
-  onAttach: (worker) ->
-    worker.port.on \logBrowsedLink, (d) ->
-      log_browsed_link d.linkHref, d.titleText
-
-    worker.port.on \checkReport, (d) ->
-      check_report d.titleText, d.linkHref, (res) ->
-        res.linkHref = d.linkHref
-        worker.port.emit \checkReportResult, res
-
-# add panel widget
-newshelper-widget-icon = self.data.url \icon.png
-newshelper-widget-page-icon = self.data.url \page.png
-last-active-tab-result = {}
-
-newshelper-panel = Panel do
-  width: 360
-  height: 120,
-  contentURL: self.data.url \panel.html
-  contentScriptFile: [self.data.url(\jquery-2.0.3.min.js), self.data.url(\panel.js)]
-
-newshelper-widget = Widget do
-  id: \newshelper-icon
-  label: "新聞小幫手"
-  contentURL: newshelper-widget-icon
-  panel: newshelper-panel
-  on-click: ->
-    newshelper-panel.port.emit \refreshContent, last-active-tab-result
-
-# register tab ready and check url
-# Listen for tab content loads.
-tabs.on 'ready', (tab) ->
-  #console.log "Tab ready #{tab.url}"
-  newshelper-widget.contentURL = newshelper-widget-icon
-  last-active-tab-result := {news_link: tab.url, news_title: tab.title}
-  (res) <- check_report tab.title, tab.url
-  last-active-tab-result <<< res
-  newshelper-widget.contentURL = newshelper-widget-page-icon
-  tab.attach do
-    contentScript: 'document.body.style.border = "5px solid red";'
-
-  notifications.notify do
-    title: "注意！您可能是問題新聞的受害者"
-    text: res.report_title
-    data: res.report_link,
-    onClick: (data) ->
-      tabs.open data
-
-tabs.on \activate, (tab) ->
-  #console.log "Tab activate #{tab.url}"
-  newshelper-widget.contentURL = newshelper-widget-icon
-  last-active-tab-result := {news_link: tab.url, news_title: tab.title}
-  (res) <- check_report tab.title, tab.url
-  last-active-tab-result <<< res
-  newshelper-widget.contentURL = newshelper-widget-page-icon
 

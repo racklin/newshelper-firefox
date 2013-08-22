@@ -19,8 +19,9 @@ module.exports = (grunt) ->
 
     lsc:
       main:
+        options: {+join}
         files:
-          \lib/main.js : <[ lib/main.ls ]>
+          \lib/main.js : <[ lib/main-init.ls lib/main-sync-db.ls lib/main-page-mod.ls lib/main-widget.ls ]>
       data:
         files:
           \data/facebook.js : <[ data/facebook.ls ]>
