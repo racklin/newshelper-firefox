@@ -31,6 +31,12 @@
         } else {
           containerNode.addClass(className);
         }
+        containerNode.find('.yF').each(function(idx, linkContainer){
+          return $(linkContainer).append(buildActionBar({
+            title: titleText,
+            link: linkHref
+          }));
+        });
         addContainerNodes(titleText, linkHref, containerNode);
         self.port.emit('logBrowsedLink', {
           linkHref: linkHref,
@@ -51,7 +57,7 @@
     };
     buildActionBar = function(options){
       var url;
-      url = "http://newshelper.g0v.tw";
+      url = "http://newshelper.g0v.tw/";
       if ("undefined" !== typeof options.title && "undefined" !== typeof options.link) {
         url += "?news_link=" + encodeURIComponent(options.link) + "&news_title= " + encodeURIComponent(options.title);
       }

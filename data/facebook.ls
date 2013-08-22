@@ -116,7 +116,7 @@ let $ = jQuery
 
 
   buildActionBar = (options) ->
-    url = "http://newshelper.g0v.tw"
+    url = "http://newshelper.g0v.tw/"
     url += "?news_link=" + encodeURIComponent(options.link) + "&news_title= " + encodeURIComponent(options.title)  if "undefined" isnt typeof (options.title) and "undefined" isnt typeof (options.link)
     "<a href=\"" + url + "\" target=\"_blank\">回報給新聞小幫手</a>"
 
