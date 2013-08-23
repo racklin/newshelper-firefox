@@ -92,7 +92,7 @@
         });
         if (hasNewNode) {
           return throttle(function(){
-            return censorGooglePlus(document.body);
+            return censorGooglePlus(target);
           }, 1000);
         }
       });

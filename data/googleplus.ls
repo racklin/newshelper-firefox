@@ -78,7 +78,7 @@ let $ = jQuery
 
       if hasNewNode
         throttle ->
-          censorGooglePlus document.body
+          censorGooglePlus target
         , 1000
 
     mutationObserver.observe target, config
