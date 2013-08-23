@@ -23,3 +23,7 @@ let $ = jQuery
 
       $pane-report.show!
 
+    # resizeHeight to fit body height
+    height = $ \#newshelper-panel .height!
+    self.port.emit \resizeHeight, height
+

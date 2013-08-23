@@ -9,6 +9,10 @@ newshelper-panel = Panel do
   contentURL: self.data.url \panel.html
   contentScriptFile: [self.data.url(\jquery-2.0.3.min.js), self.data.url(\panel.js)]
 
+newshelper-panel.port.on \resizeHeight, (height) ->
+  newshelper-panel.height = height+30;
+
+
 newshelper-widget = Widget do
   id: \newshelper-icon
   label: "新聞小幫手"
@@ -16,6 +20,7 @@ newshelper-widget = Widget do
   panel: newshelper-panel
   on-click: ->
     newshelper-panel.port.emit \refreshContent, last-active-tab-result
+
 
 # register tab ready and check url
 # Listen for tab content loads.
@@ -31,6 +36,7 @@ tabs.on 'ready', (tab) ->
       contentScript: 'document.body.style.border = "5px solid red";'
 
   showNotification "注意！您可能是問題新聞的受害者", res.report_title, res.report_link
+
 
 tabs.on \activate, (tab) ->
   #console.log "Tab activate #{tab.url}"

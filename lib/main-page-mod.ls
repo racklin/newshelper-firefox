@@ -27,3 +27,4 @@ pageMod.PageMod do
       check_report d.titleText, d.linkHref, (res) ->
         res.linkHref = d.linkHref
         worker.port.emit \checkReportResult, res
+
