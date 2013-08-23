@@ -59,7 +59,6 @@ let $ = jQuery
     "<a href=\"" + url + "\" target=\"_blank\">回報給新聞小幫手</a>"
 
 
-  target = document.getElementById \stream-items-id
   config = { +attributes, +childList, +characterData, +subtree }
 
   registerObserver = ->

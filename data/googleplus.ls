@@ -58,7 +58,6 @@ let $ = jQuery
     "<a href=\"" + url + "\" target=\"_blank\">回報給新聞小幫手</a>"
 
 
-  target = document.getElementById \contentPane
   config = { +attributes, +childList, +characterData, +subtree }
 
   registerObserver = ->
@@ -77,10 +76,11 @@ let $ = jQuery
 
       if hasNewNode
         throttle ->
+          target = document.getElementById \contentPane
           censorGooglePlus target
         , 1000
 
-    mutationObserver.observe target, config
+    mutationObserver.observe document.body, config
 
 
   do ->

@@ -119,7 +119,6 @@ let $ = jQuery
     url += "?news_link=" + encodeURIComponent(options.link) + "&news_title= " + encodeURIComponent(options.title)  if "undefined" isnt typeof (options.title) and "undefined" isnt typeof (options.link)
     "<a href=\"" + url + "\" target=\"_blank\">回報給新聞小幫手</a>"
 
-  target = document.getElementById \contentArea
   config = { +attributes, +childList, +characterData, +subtree }
 
   registerObserver = ->
@@ -138,10 +137,11 @@ let $ = jQuery
 
       if hasNewNode
         throttle ->
+          target = document.getElementById \contentArea
           censorFacebook target
         , 1000
 
-    mutationObserver.observe target, config
+    mutationObserver.observe document.body, config
 
 
   excludedPaths = <[ ai.php generic.php ]>
