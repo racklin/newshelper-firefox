@@ -34,7 +34,6 @@
           return;
         }
         containerNode.find('ul.tweet-actions').each(function(idx, linkContainer){
-          console.log('add-report-newshelper');
           return $(linkContainer).prepend($('<li></li>').html(buildActionBar({
             title: titleText,
             link: linkHref
@@ -53,10 +52,8 @@
       return $(baseNode).find('li').not("." + className + ",.original-tweet-container").each(function(idx, uiStreamAttachment){
         var titleText, linkHref;
         uiStreamAttachment = $(uiStreamAttachment);
-        console.log(uiStreamAttachment.attr('class'));
         titleText = uiStreamAttachment.find('a.twitter-timeline-link').attr('title');
         linkHref = uiStreamAttachment.find('a.twitter-timeline-link').attr('data-expanded-url');
-        console.log(linkHref);
         return censorTwitterNode(uiStreamAttachment, titleText, linkHref);
       });
     };
@@ -96,7 +93,6 @@
           }
         });
         if (hasNewNode) {
-          console.log('hasNewNode');
           return throttle(function(){
             var target;
             target = document.getElementById('stream-items-id');

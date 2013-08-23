@@ -16,6 +16,9 @@ Facebook 誤導新聞提醒：
 Google+ 誤導新聞提醒：
 ![Google+](http://racklin.github.io/newshelper-firefox/screenshot3.png)
 
+Google+ 誤導新聞提醒：
+![Twitter+](http://racklin.github.io/newshelper-firefox/screenshot-twitter.png)
+
 瀏覽誤導新聞網頁時提醒：
 ![Tab Browsing](http://racklin.github.io/newshelper-firefox/screenshot2.png)
 ![Tab Browsing2](http://racklin.github.io/newshelper-firefox/screenshot5.png)
