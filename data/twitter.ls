@@ -24,17 +24,19 @@ let $ = jQuery
     ).text(options.title)).html() + \</span></div>
 
 
-  censorGooglePlus = (baseNode) ->
+  censorTwitter = (baseNode) ->
     # add warning message to a GooglePlus post if necessary
-    censorGooglePlusNode = (containerNode, titleText, linkHref) ->
+    censorTwitterNode = (containerNode, titleText, linkHref) ->
+      #containerNode = $(containerNode)
       if containerNode.hasClass(className)
         return
       else
         containerNode.addClass className
 
+      return unless linkHref
       # add report to newshelper
-      containerNode.find \.yF .each (idx, linkContainer) ->
-          $ linkContainer .append buildActionBar {title: titleText, link: linkHref}
+      containerNode.find \ul.tweet-actions .each (idx, linkContainer) ->
+        $ linkContainer .prepend ($ \<li></li> .html buildActionBar {title: titleText, link: linkHref})
 
       # add to cache
       addContainerNodes titleText, linkHref, containerNode
@@ -44,12 +46,11 @@ let $ = jQuery
 
 
     # my timeline
-    $ baseNode .find \.ZpzDcd .not ".#className" .each (idx, uiStreamAttachment) ->
+    $ baseNode .find \li .not ".#{className},.original-tweet-container" .each (idx, uiStreamAttachment) ->
       uiStreamAttachment = $(uiStreamAttachment)
-      titleText = uiStreamAttachment.find \a.YF .text!
-      linkHref = uiStreamAttachment.find \a.YF .attr \href
-      #console.log linkHref
-      censorGooglePlusNode uiStreamAttachment, titleText, linkHref
+      titleText = uiStreamAttachment.find \a.twitter-timeline-link .attr \title
+      linkHref = uiStreamAttachment.find \a.twitter-timeline-link .attr \data-expanded-url
+      censorTwitterNode uiStreamAttachment, titleText, linkHref
 
 
   buildActionBar = (options) ->
@@ -58,7 +59,7 @@ let $ = jQuery
     "<a href=\"" + url + "\" target=\"_blank\">回報給新聞小幫手</a>"
 
 
-  target = document.getElementById \contentPane
+  target = document.getElementById \stream-items-id
   config = { +attributes, +childList, +characterData, +subtree }
 
   registerObserver = ->
@@ -77,10 +78,11 @@ let $ = jQuery
 
       if hasNewNode
         throttle ->
-          censorGooglePlus target
+          target = document.getElementById \stream-items-id
+          censorTwitter target
         , 1000
 
-    mutationObserver.observe target, config
+    mutationObserver.observe document.body, config
 
 
   do ->
@@ -90,7 +92,7 @@ let $ = jQuery
         if containerNode.hasClass classNameAdded
           return false
         containerNode.addClass classNameAdded
-        containerNode.append buildWarningMessage(
+        containerNode .find \p.tweet-text .append buildWarningMessage(
           title: report.report_title
           link: report.report_link
         )
@@ -98,10 +100,10 @@ let $ = jQuery
     # The contentPane is filled via AJAX.
     # Only need to call censorGooglePlus() after contentPane is present
     timer_ = setInterval ->
-      target = document.getElementById \contentPane
+      target = document.getElementById \stream-items-id
       if target
         clearInterval timer_
-        censorGooglePlus target
+        censorTwitter target
         registerObserver!
     , 1000
 

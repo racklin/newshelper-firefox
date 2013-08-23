@@ -35,7 +35,8 @@
           files: {
             'data/facebook.js': ['data/facebook.ls'],
             'data/googleplus.js': ['data/googleplus.ls'],
-            'data/panel.js': ['data/panel.ls']
+            'data/panel.js': ['data/panel.ls'],
+            'data/twitter.js': ['data/twitter.ls']
           }
         }
       },

@@ -34,7 +34,6 @@ let $ = jQuery
       matches = ('' + linkHref).match('(.*)[?&]fb_action_ids=.*');
       linkHref = matches[1] if matches
 
-      containerNode = $(containerNode)
       if containerNode.hasClass(className)
         return
       else
@@ -94,21 +93,21 @@ let $ = jQuery
 
 
     # my timeline
-    $ baseNode .find \.uiStreamAttachments .not className .each (idx, uiStreamAttachment) ->
+    $ baseNode .find \.uiStreamAttachments .not ".#className" .each (idx, uiStreamAttachment) ->
       uiStreamAttachment = $ uiStreamAttachment
       titleText = uiStreamAttachment.find \.uiAttachmentTitle .text!
       linkHref = uiStreamAttachment.find \a .attr \href
       censorFacebookNode uiStreamAttachment, titleText, linkHref
 
     # others' timeline, fan page
-    $ baseNode .find \.shareUnit .not className .each (idx, shareUnit) ->
+    $ baseNode .find \.shareUnit .not ".#className" .each (idx, shareUnit) ->
       shareUnit = $ shareUnit
       titleText = shareUnit.find ".fwb" .text!
       linkHref = shareUnit.find \a .attr \href
       censorFacebookNode shareUnit, titleText, linkHref
 
     # post page (single post)
-    $ baseNode .find \._6kv .not className .each (idx, userContent) ->
+    $ baseNode .find \._6kv .not ".#className" .each (idx, userContent) ->
       userContent = $ userContent
       titleText = userContent .find \.mbs .text!
       linkHref = userContent .find \a .attr \href
