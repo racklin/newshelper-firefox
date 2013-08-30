@@ -87,7 +87,7 @@ sync_report_data = ->
           i++
 
       # 每 10 分鐘去檢查一次是否有更新
-      update-db-time = prefs[\update_db-_ime] ? 600
+      update-db-time = prefs[\update_db_time] ? 600
       setTimeout sync_report_data, update-db-time*1000
   }).get!
 
