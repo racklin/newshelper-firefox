@@ -83,7 +83,9 @@ sync_report_data = ->
           objectStore.put ret.data[i]
 
           # 檢查最近天看過的內容是否有被加進去的
-          check_recent_seen ret.data[i]
+          # 只讓 notification 通知一次，如果之後再更新就不通知了
+          if report? and parseInt(ret.data[i].created_at ,10) > parseInt(report.updated_at, 10)
+            check_recent_seen ret.data[i]
           i++
 
       # 每 10 分鐘去檢查一次是否有更新
