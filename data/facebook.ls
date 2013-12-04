@@ -85,6 +85,29 @@ let $ = jQuery
           ))).insertAfter  shareAction
           addedAction = true
 
+      # new layout
+      unless addedAction
+        containerNode.parent!parent(\.UFICommentContent).parent!find(\.UFICommentActions).each (idx, foo) ->
+          $(foo).append(' · ', buildActionBar(title: titleText, link: linkHref))
+          addedAction = true
+
+      unless addedAction
+        # this check sould be after UFICommentContent
+        containerNode.parents(\._5pax).find(\._5pcp).each (idx, foo) ->
+          $(foo).append(' · ', buildActionBar(title: titleText, link: linkHref))
+          addedAction = true
+
+      # 再來是single post
+      unless addedAction
+        containerNode.parent('div[role="article"]').find('.uiCommentContainer .UIActionLinks').each (idx, uiStreamSource) ->
+          $(uiStreamSource).append(' · ').append(buildActionBar(title: titleText, link: linkHref))
+          addedAction = true
+
+      unless addedAction
+        containerNode.siblings!find(\.uiCommentContainer).find(\.UIActionLinks).each (idx, foo) ->
+          $(foo).append(' · ', buildActionBar(title: titleText, link: linkHref))
+          addedAction = true
+
       # cached containerNode
       addContainerNodes titleText, linkHref, containerNode
 
