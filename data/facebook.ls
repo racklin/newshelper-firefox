@@ -122,12 +122,24 @@ let $ = jQuery
       linkHref = uiStreamAttachment.find \a .attr \href
       censorFacebookNode uiStreamAttachment, titleText, linkHref
 
+    $ baseNode .find \._5rwo .not ".#className" .each (idx, uiStreamAttachment) ->
+      uiStreamAttachment = $ uiStreamAttachment
+      titleText = uiStreamAttachment.find \.fwb .text!
+      linkHref = uiStreamAttachment.find \a .attr \href
+      censorFacebookNode uiStreamAttachment, titleText, linkHref
+
     # others' timeline, fan page
     $ baseNode .find \.shareUnit .not ".#className" .each (idx, shareUnit) ->
       shareUnit = $ shareUnit
       titleText = shareUnit.find ".fwb" .text!
       linkHref = shareUnit.find \a .attr \href
       censorFacebookNode shareUnit, titleText, linkHref
+
+    $ baseNode .find \._5rny .not ".#className" .each (idx, userContent) ->
+      userContent = $ userContent
+      titleText = userContent .find \.fwb .text!
+      linkHref = userContent .find \a .attr \href
+      censorFacebookNode userContent, titleText, linkHref
 
     # post page (single post)
     $ baseNode .find \._6kv .not ".#className" .each (idx, userContent) ->

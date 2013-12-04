@@ -36,6 +36,9 @@ let $ = jQuery
       containerNode.find \.yF .each (idx, linkContainer) ->
           $ linkContainer .append buildActionBar {title: titleText, link: linkHref}
 
+      containerNode.find 'a.ot-anchor' .each (idx, linkContainer) ->
+          $ linkContainer .append buildActionBar {title: titleText, link: linkHref}
+
       # add to cache
       addContainerNodes titleText, linkHref, containerNode
 
@@ -48,6 +51,13 @@ let $ = jQuery
       uiStreamAttachment = $(uiStreamAttachment)
       titleText = uiStreamAttachment.find \a.YF .text!
       linkHref = uiStreamAttachment.find \a.YF .attr \href
+      #console.log linkHref
+      censorGooglePlusNode uiStreamAttachment, titleText, linkHref
+
+    $ baseNode .find \.cg .not ".#className" .each (idx, uiStreamAttachment) ->
+      uiStreamAttachment = $(uiStreamAttachment)
+      titleText = uiStreamAttachment.find 'a.ot-anchor' .text!
+      linkHref = uiStreamAttachment.find 'a.ot-anchor' .attr \href
       #console.log linkHref
       censorGooglePlusNode uiStreamAttachment, titleText, linkHref
 

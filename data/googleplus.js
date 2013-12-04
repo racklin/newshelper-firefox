@@ -35,6 +35,12 @@
             link: linkHref
           }));
         });
+        containerNode.find('a.ot-anchor').each(function(idx, linkContainer){
+          return $(linkContainer).append(buildActionBar({
+            title: titleText,
+            link: linkHref
+          }));
+        });
         addContainerNodes(titleText, linkHref, containerNode);
         self.port.emit('logBrowsedLink', {
           linkHref: linkHref,
@@ -45,11 +51,18 @@
           titleText: titleText
         });
       };
-      return $(baseNode).find('.ZpzDcd').not("." + className).each(function(idx, uiStreamAttachment){
+      $(baseNode).find('.ZpzDcd').not("." + className).each(function(idx, uiStreamAttachment){
         var titleText, linkHref;
         uiStreamAttachment = $(uiStreamAttachment);
         titleText = uiStreamAttachment.find('a.YF').text();
         linkHref = uiStreamAttachment.find('a.YF').attr('href');
+        return censorGooglePlusNode(uiStreamAttachment, titleText, linkHref);
+      });
+      return $(baseNode).find('.cg').not("." + className).each(function(idx, uiStreamAttachment){
+        var titleText, linkHref;
+        uiStreamAttachment = $(uiStreamAttachment);
+        titleText = uiStreamAttachment.find('a.ot-anchor').text();
+        linkHref = uiStreamAttachment.find('a.ot-anchor').attr('href');
         return censorGooglePlusNode(uiStreamAttachment, titleText, linkHref);
       });
     };

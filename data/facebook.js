@@ -147,12 +147,26 @@
         linkHref = uiStreamAttachment.find('a').attr('href');
         return censorFacebookNode(uiStreamAttachment, titleText, linkHref);
       });
+      $(baseNode).find('._5rwo').not("." + className).each(function(idx, uiStreamAttachment){
+        var titleText, linkHref;
+        uiStreamAttachment = $(uiStreamAttachment);
+        titleText = uiStreamAttachment.find('.fwb').text();
+        linkHref = uiStreamAttachment.find('a').attr('href');
+        return censorFacebookNode(uiStreamAttachment, titleText, linkHref);
+      });
       $(baseNode).find('.shareUnit').not("." + className).each(function(idx, shareUnit){
         var titleText, linkHref;
         shareUnit = $(shareUnit);
         titleText = shareUnit.find(".fwb").text();
         linkHref = shareUnit.find('a').attr('href');
         return censorFacebookNode(shareUnit, titleText, linkHref);
+      });
+      $(baseNode).find('._5rny').not("." + className).each(function(idx, userContent){
+        var titleText, linkHref;
+        userContent = $(userContent);
+        titleText = userContent.find('.fwb').text();
+        linkHref = userContent.find('a').attr('href');
+        return censorFacebookNode(userContent, titleText, linkHref);
       });
       return $(baseNode).find('._6kv').not("." + className).each(function(idx, userContent){
         var titleText, linkHref;
