@@ -5,13 +5,17 @@ pageMod.PageMod do
   contentStyleFile: [self.data.url \content_style.css]
   contentScriptFile: [self.data.url(\jquery-2.0.3.min.js), self.data.url(\facebook.js)]
   onAttach: (worker) ->
+    worker.port.on \sync_report_data, ->
+      sync_report_data!
+
     worker.port.on \logBrowsedLink, (d) ->
       log_browsed_link d.linkHref, d.titleText
 
     worker.port.on \checkReport, (d) ->
       check_report d.titleText, d.linkHref, (res) ->
-        res.linkHref = d.linkHref
-        worker.port.emit \checkReportResult, res
+        if res
+          res.linkHref = d.linkHref
+          worker.port.emit \checkReportResult, res
 
 # register google plus newshelper check
 pageMod.PageMod do
@@ -20,13 +24,17 @@ pageMod.PageMod do
   contentStyleFile: [self.data.url \content_style.css]
   contentScriptFile: [self.data.url(\jquery-2.0.3.min.js), self.data.url(\googleplus.js)]
   onAttach: (worker) ->
+    worker.port.on \sync_report_data, ->
+      sync_report_data!
+
     worker.port.on \logBrowsedLink, (d) ->
       log_browsed_link d.linkHref, d.titleText
 
     worker.port.on \checkReport, (d) ->
       check_report d.titleText, d.linkHref, (res) ->
-        res.linkHref = d.linkHref
-        worker.port.emit \checkReportResult, res
+        if res
+          res.linkHref = d.linkHref
+          worker.port.emit \checkReportResult, res
 
 # register twitter newshelper check
 pageMod.PageMod do
@@ -35,11 +43,15 @@ pageMod.PageMod do
   contentStyleFile: [self.data.url \content_style.css]
   contentScriptFile: [self.data.url(\jquery-2.0.3.min.js), self.data.url(\twitter.js)]
   onAttach: (worker) ->
+    worker.port.on \sync_report_data, ->
+      sync_report_data!
+
     worker.port.on \logBrowsedLink, (d) ->
       log_browsed_link d.linkHref, d.titleText
 
     worker.port.on \checkReport, (d) ->
       check_report d.titleText, d.linkHref, (res) ->
-        res.linkHref = d.linkHref
-        worker.port.emit \checkReportResult, res
+        if res
+          res.linkHref = d.linkHref
+          worker.port.emit \checkReportResult, res
 

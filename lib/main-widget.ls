@@ -29,6 +29,7 @@ tabs.on 'ready', (tab) ->
   newshelper-widget.contentURL = newshelper-widget-icon
   last-active-tab-result := {news_link: tab.url, news_title: tab.title}
   (res) <- check_report tab.title, tab.url
+  return unless res
   last-active-tab-result <<< res
   newshelper-widget.contentURL = newshelper-widget-page-icon
   if prefs[\highlight_website]
@@ -43,6 +44,7 @@ tabs.on \activate, (tab) ->
   newshelper-widget.contentURL = newshelper-widget-icon
   last-active-tab-result := {news_link: tab.url, news_title: tab.title}
   (res) <- check_report tab.title, tab.url
+  return unless res
   last-active-tab-result <<< res
   newshelper-widget.contentURL = newshelper-widget-page-icon
 

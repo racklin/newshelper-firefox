@@ -23,7 +23,7 @@
     };
     censorFacebook = function(baseNode){
       var censorFacebookNode;
-      censorFacebookNode = function(containerNode, titleText, linkHref){
+      censorFacebookNode = function(containerNode, titleText, linkHref, rule){
         var matches, addedAction;
         matches = ("" + linkHref).match("^http://www.facebook.com/l.php\\?u=([^&]*)");
         if (matches) {
@@ -43,7 +43,8 @@
           var addedAction;
           $(uiStreamSource).find('li:first').append("· " + buildActionBar({
             title: titleText,
-            link: linkHref
+            link: linkHref,
+            action: 1
           }));
           return addedAction = true;
         });
@@ -52,7 +53,8 @@
             var addedAction;
             $($('<span></span>').html(buildActionBar({
               title: titleText,
-              link: linkHref
+              link: linkHref,
+              action: 2
             }))).insertBefore(uiStreamSource);
             addedAction = true;
             if (idx !== 0) {
@@ -65,7 +67,8 @@
             var addedAction;
             $($('<span></span>').html(buildActionBar({
               title: titleText,
-              link: linkHref
+              link: linkHref,
+              action: 3
             }) + ' · ')).insertBefore(uiStreamSource);
             return addedAction = true;
           });
@@ -75,7 +78,8 @@
             var addedAction;
             $(uiStreamSource).append(' · ').append(buildActionBar({
               title: titleText,
-              link: linkHref
+              link: linkHref,
+              action: 4
             }));
             return addedAction = true;
           });
@@ -85,17 +89,19 @@
             var addedAction;
             $($('<a class="_5cix"></a>').html(buildActionBar({
               title: titleText,
-              link: linkHref
+              link: linkHref,
+              action: 5
             }))).insertAfter(shareAction);
             return addedAction = true;
           });
         }
         if (!addedAction) {
-          containerNode.parent().parent('.UFICommentContent').parent().find('.UFICommentActions').each(function(idx, foo){
+          containerNode.parents('.UFICommentContentBlock').find('.UFICommentActions').each(function(idx, foo){
             var addedAction;
             $(foo).append(' · ', buildActionBar({
               title: titleText,
-              link: linkHref
+              link: linkHref,
+              action: 6
             }));
             return addedAction = true;
           });
@@ -105,7 +111,8 @@
             var addedAction;
             $(foo).append(' · ', buildActionBar({
               title: titleText,
-              link: linkHref
+              link: linkHref,
+              action: 7
             }));
             return addedAction = true;
           });
@@ -115,7 +122,8 @@
             var addedAction;
             $(uiStreamSource).append(' · ').append(buildActionBar({
               title: titleText,
-              link: linkHref
+              link: linkHref,
+              action: 8
             }));
             return addedAction = true;
           });
@@ -125,7 +133,20 @@
             var addedAction;
             $(foo).append(' · ', buildActionBar({
               title: titleText,
-              link: linkHref
+              link: linkHref,
+              action: 9
+            }));
+            return addedAction = true;
+          });
+        }
+        if (!addedAction) {
+          containerNode.parents('.userContentWrapper').find('._5vsi div').each(function(idx, foo){
+            var addedAction;
+            $(foo).append(' · ', buildActionBar({
+              title: titleText,
+              link: linkHref,
+              rule: rule,
+              action: 10
             }));
             return addedAction = true;
           });
@@ -145,35 +166,35 @@
         uiStreamAttachment = $(uiStreamAttachment);
         titleText = uiStreamAttachment.find('.uiAttachmentTitle').text();
         linkHref = uiStreamAttachment.find('a').attr('href');
-        return censorFacebookNode(uiStreamAttachment, titleText, linkHref);
+        return censorFacebookNode(uiStreamAttachment, titleText, linkHref, 'rule1');
       });
       $(baseNode).find('._5rwo').not("." + className).each(function(idx, uiStreamAttachment){
         var titleText, linkHref;
         uiStreamAttachment = $(uiStreamAttachment);
         titleText = uiStreamAttachment.find('.fwb').text();
         linkHref = uiStreamAttachment.find('a').attr('href');
-        return censorFacebookNode(uiStreamAttachment, titleText, linkHref);
+        return censorFacebookNode(uiStreamAttachment, titleText, linkHref, 'rule2');
       });
       $(baseNode).find('.shareUnit').not("." + className).each(function(idx, shareUnit){
         var titleText, linkHref;
         shareUnit = $(shareUnit);
         titleText = shareUnit.find(".fwb").text();
         linkHref = shareUnit.find('a').attr('href');
-        return censorFacebookNode(shareUnit, titleText, linkHref);
+        return censorFacebookNode(shareUnit, titleText, linkHref, 'rule4');
       });
       $(baseNode).find('._5rny').not("." + className).each(function(idx, userContent){
         var titleText, linkHref;
         userContent = $(userContent);
         titleText = userContent.find('.fwb').text();
         linkHref = userContent.find('a').attr('href');
-        return censorFacebookNode(userContent, titleText, linkHref);
+        return censorFacebookNode(userContent, titleText, linkHref, 'rule5');
       });
       return $(baseNode).find('._6kv').not("." + className).each(function(idx, userContent){
         var titleText, linkHref;
         userContent = $(userContent);
         titleText = userContent.find('.mbs').text();
         linkHref = userContent.find('a').attr('href');
-        return censorFacebookNode(userContent, titleText, linkHref);
+        return censorFacebookNode(userContent, titleText, linkHref, 'rule6');
       });
     };
     buildActionBar = function(options){

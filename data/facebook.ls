@@ -26,7 +26,7 @@ let $ = jQuery
 
   censorFacebook = (baseNode) ->
     # add warning message to a Facebook post if necessary
-    censorFacebookNode = (containerNode, titleText, linkHref) ->
+    censorFacebookNode = (containerNode, titleText, linkHref, rule) ->
 
       matches = ("" + linkHref).match("^http://www.facebook.com/l.php\\?u=([^&]*)")
       linkHref = decodeURIComponent(matches[1])  if matches
@@ -45,6 +45,7 @@ let $ = jQuery
         $(uiStreamSource).find(\li:first).append "· " + buildActionBar(
           title: titleText
           link: linkHref
+          action: 1
         )
         addedAction = true
 
@@ -54,6 +55,7 @@ let $ = jQuery
           $($(\<span></span>).html(buildActionBar(
             title: titleText
             link: linkHref
+            action: 2
           ))).insertBefore uiStreamSource
 
           addedAction = true
@@ -66,13 +68,14 @@ let $ = jQuery
           $($(\<span></span>).html(buildActionBar(
             title: titleText
             link: linkHref
+            action: 3
           ) + ' · ')).insertBefore  uiStreamSource
           addedAction = true
 
       # 再來是個人頁面
       unless addedAction
         containerNode.parent('div[role="article"]').siblings(\.uiCommentContainer).find(\.UIActionLinks).each (idx, uiStreamSource) ->
-          $(uiStreamSource).append(' · ').append(buildActionBar({title: titleText, link: linkHref}))
+          $(uiStreamSource).append(' · ').append(buildActionBar({title: titleText, link: linkHref, action: 4}))
           addedAction = true
 
       # 新版Timeline
@@ -82,30 +85,36 @@ let $ = jQuery
           $($('<a class="_5cix"></a>').html(buildActionBar(
             title: titleText
             link: linkHref
+            action: 5
           ))).insertAfter  shareAction
           addedAction = true
 
       # new layout
       unless addedAction
-        containerNode.parent!parent(\.UFICommentContent).parent!find(\.UFICommentActions).each (idx, foo) ->
-          $(foo).append(' · ', buildActionBar(title: titleText, link: linkHref))
+        containerNode.parents('.UFICommentContentBlock').find('.UFICommentActions').each (idx, foo) ->
+          $(foo).append(' · ', buildActionBar(title: titleText, link: linkHref, action: 6))
           addedAction = true
 
       unless addedAction
         # this check sould be after UFICommentContent
         containerNode.parents(\._5pax).find(\._5pcp).each (idx, foo) ->
-          $(foo).append(' · ', buildActionBar(title: titleText, link: linkHref))
+          $(foo).append(' · ', buildActionBar(title: titleText, link: linkHref, action: 7))
           addedAction = true
 
       # 再來是single post
       unless addedAction
         containerNode.parent('div[role="article"]').find('.uiCommentContainer .UIActionLinks').each (idx, uiStreamSource) ->
-          $(uiStreamSource).append(' · ').append(buildActionBar(title: titleText, link: linkHref))
+          $(uiStreamSource).append(' · ').append(buildActionBar(title: titleText, link: linkHref, action: 8))
           addedAction = true
 
       unless addedAction
         containerNode.siblings!find(\.uiCommentContainer).find(\.UIActionLinks).each (idx, foo) ->
-          $(foo).append(' · ', buildActionBar(title: titleText, link: linkHref))
+          $(foo).append(' · ', buildActionBar(title: titleText, link: linkHref, action: 9))
+          addedAction = true
+
+      unless addedAction
+        containerNode.parents('.userContentWrapper').find('._5vsi div').each (idx, foo) ->
+          $(foo).append(' · ', buildActionBar(title: titleText, link: linkHref, rule: rule, action: 10))
           addedAction = true
 
       # cached containerNode
@@ -120,33 +129,33 @@ let $ = jQuery
       uiStreamAttachment = $ uiStreamAttachment
       titleText = uiStreamAttachment.find \.uiAttachmentTitle .text!
       linkHref = uiStreamAttachment.find \a .attr \href
-      censorFacebookNode uiStreamAttachment, titleText, linkHref
+      censorFacebookNode uiStreamAttachment, titleText, linkHref, \rule1
 
     $ baseNode .find \._5rwo .not ".#className" .each (idx, uiStreamAttachment) ->
       uiStreamAttachment = $ uiStreamAttachment
       titleText = uiStreamAttachment.find \.fwb .text!
       linkHref = uiStreamAttachment.find \a .attr \href
-      censorFacebookNode uiStreamAttachment, titleText, linkHref
+      censorFacebookNode uiStreamAttachment, titleText, linkHref, \rule2
 
     # others' timeline, fan page
     $ baseNode .find \.shareUnit .not ".#className" .each (idx, shareUnit) ->
       shareUnit = $ shareUnit
       titleText = shareUnit.find ".fwb" .text!
       linkHref = shareUnit.find \a .attr \href
-      censorFacebookNode shareUnit, titleText, linkHref
+      censorFacebookNode shareUnit, titleText, linkHref, \rule4
 
     $ baseNode .find \._5rny .not ".#className" .each (idx, userContent) ->
       userContent = $ userContent
       titleText = userContent .find \.fwb .text!
       linkHref = userContent .find \a .attr \href
-      censorFacebookNode userContent, titleText, linkHref
+      censorFacebookNode userContent, titleText, linkHref, \rule5
 
     # post page (single post)
     $ baseNode .find \._6kv .not ".#className" .each (idx, userContent) ->
       userContent = $ userContent
       titleText = userContent .find \.mbs .text!
       linkHref = userContent .find \a .attr \href
-      censorFacebookNode userContent, titleText, linkHref
+      censorFacebookNode userContent, titleText, linkHref, \rule6
 
 
   buildActionBar = (options) ->

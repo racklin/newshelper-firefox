@@ -5,3 +5,7 @@ require! request.Request
 { Panel } = require \sdk/panel
 { setTimeout, clearTimeout} = require \timers
 { prefs } = require \sdk/simple-prefs
+URLNormalizer = require \./url-normalizer.js
+
+# init URLNormalizer Map
+URLNormalizer.setCSVMap self.data.load \map.csv
