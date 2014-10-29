@@ -189,12 +189,19 @@
         linkHref = userContent.find('a').attr('href');
         return censorFacebookNode(userContent, titleText, linkHref, 'rule5');
       });
-      return $(baseNode).find('._6kv').not("." + className).each(function(idx, userContent){
+      $(baseNode).find('._6kv').not("." + className).each(function(idx, userContent){
         var titleText, linkHref;
         userContent = $(userContent);
         titleText = userContent.find('.mbs').text();
         linkHref = userContent.find('a').attr('href');
         return censorFacebookNode(userContent, titleText, linkHref, 'rule6');
+      });
+      return $(baseNode).find('._6m3').not("." + className).each(function(idx, userContent){
+        var titleText, linkHref;
+        userContent = $(userContent);
+        titleText = userContent.find('a').text();
+        linkHref = userContent.find('a').attr('href');
+        return censorFacebookNode(userContent.parents('._2r3x').find('._6m3').parent(), serContent, titleText, linkHref, 'rule7');
       });
     };
     buildActionBar = function(options){

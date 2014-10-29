@@ -157,6 +157,13 @@ let $ = jQuery
       linkHref = userContent .find \a .attr \href
       censorFacebookNode userContent, titleText, linkHref, \rule6
 
+    # post page (single post) */
+    $ baseNode .find \._6m3 .not ".#className" .each (idx, userContent) ->
+      userContent = $ userContent
+      titleText = userContent .find \a .text!
+      linkHref = userContent .find \a .attr \href
+      censorFacebookNode userContent.parents('._2r3x').find('._6m3').parent!,serContent, titleText, linkHref, \rule7
+
 
   buildActionBar = (options) ->
     url = "http://newshelper.g0v.tw/"

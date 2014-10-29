@@ -1,9 +1,9 @@
-require! <[ self page-mod sdk/notifications sdk/tabs ]>
-require! request.Request
-{ indexedDB } = require \indexed-db
+require! <[ sdk/self sdk/page-mod sdk/notifications sdk/tabs ]>
+{ Request } = require \sdk/request
+{ indexedDB } = require \sdk/indexed-db
 { Widget } = require \sdk/widget
 { Panel } = require \sdk/panel
-{ setTimeout, clearTimeout} = require \timers
+{ setTimeout, clearTimeout} = require \sdk/timers
 { prefs } = require \sdk/simple-prefs
 URLNormalizer = require \./url-normalizer.js
 
