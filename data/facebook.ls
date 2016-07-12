@@ -113,7 +113,7 @@ let $ = jQuery
           addedAction = true
 
       unless addedAction
-        containerNode.parents('.userContentWrapper').find('._5vsi div').each (idx, foo) ->
+        containerNode.parents('.userContentWrapper').find('._5vsi > div').each (idx, foo) ->
           $(foo).append(' · ', buildActionBar(title: titleText, link: linkHref, rule: rule, action: 10))
           addedAction = true
 
@@ -162,7 +162,7 @@ let $ = jQuery
       userContent = $ userContent
       titleText = userContent .find \a .text!
       linkHref = userContent .find \a .attr \href
-      censorFacebookNode userContent.parents('._2r3x').find('._6m3').parent!,serContent, titleText, linkHref, \rule7
+      censorFacebookNode userContent.parents('._2r3x').find('._6m3').parents('._6m2').parent!,serContent, titleText, linkHref, \rule7
 
 
   buildActionBar = (options) ->

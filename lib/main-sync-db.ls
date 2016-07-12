@@ -1,6 +1,7 @@
 # global opened_db handle
 opened_db = null
 seen_link = {}
+next_fetch_at = 0
 
 get_time_diff = (time) ->
   delta = Math.floor(new Date!getTime! / 1000) - time
@@ -68,7 +69,7 @@ check_recent_seen = (report) ->
 sync_report_data = ->
   (opened_db) <- get_newshelper_db
   (report) <- get_recent_report
-  cachedTime = if report?.updated_at? then parseInt report.updated_at else 0
+  cachedTime = Math.max(next_fetch_at, if report?.updated_at? then parseInt report.updated_at else 0)
   url = "http://newshelper.g0v.tw/index/data?time=#cachedTime"
   # console.log "fetch url: #url"
   Request({
@@ -77,6 +78,7 @@ sync_report_data = ->
       ret = response.json
       transaction = opened_db.transaction \report, \readwrite
       objectStore = transaction.objectStore \report
+      next_fetch_at = ret.time
       if ret.data
         i = 0
 

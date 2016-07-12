@@ -5,7 +5,7 @@
   "description": "新聞小幫手 Firefox 版 ",
   "author": "racklin@gmail.com",
   "license": "CC0",
-  "version": "1.4.1",
+  "version": "1.6.1",
   "icon": "icon.png",
   "icon64": "icon64.png",
   "main": "lib/main.js",

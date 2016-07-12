@@ -140,7 +140,7 @@
           });
         }
         if (!addedAction) {
-          containerNode.parents('.userContentWrapper').find('._5vsi div').each(function(idx, foo){
+          containerNode.parents('.userContentWrapper').find('._5vsi > div').each(function(idx, foo){
             var addedAction;
             $(foo).append(' · ', buildActionBar({
               title: titleText,
@@ -201,7 +201,7 @@
         userContent = $(userContent);
         titleText = userContent.find('a').text();
         linkHref = userContent.find('a').attr('href');
-        return censorFacebookNode(userContent.parents('._2r3x').find('._6m3').parent(), serContent, titleText, linkHref, 'rule7');
+        return censorFacebookNode(userContent.parents('._2r3x').find('._6m3').parents('._6m2').parent(), serContent, titleText, linkHref, 'rule7');
       });
     };
     buildActionBar = function(options){

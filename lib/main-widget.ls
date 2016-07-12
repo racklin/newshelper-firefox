@@ -20,6 +20,8 @@ newshelper-widget = ActionButton do
     '64': newshelper-widget-icon
   panel: newshelper-panel
   on-click: ->
+    newshelper-panel.show do
+      position: newshelper-widget
     newshelper-panel.port.emit \refreshContent, last-active-tab-result
 
 
