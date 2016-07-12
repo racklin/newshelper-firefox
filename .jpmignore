@@ -3,6 +3,7 @@
 /node_modules/**
 /.git/**
 .gitignore
+.jpmignore
 /.vscode/**
 g0v.json
 Gruntfile.*
