@@ -1,7 +1,7 @@
 require! <[ sdk/self sdk/page-mod sdk/notifications sdk/tabs ]>
 { Request } = require \sdk/request
 { indexedDB } = require \sdk/indexed-db
-{ Widget } = require \sdk/widget
+{ ActionButton } = require \sdk/ui
 { Panel } = require \sdk/panel
 { setTimeout, clearTimeout} = require \sdk/timers
 { prefs } = require \sdk/simple-prefs

@@ -1,0 +1,10 @@
+.DS_Store
+*.xpi
+/node_modules/**
+/.git/**
+.gitignore
+/.vscode/**
+g0v.json
+Gruntfile.*
+/lib/*.ls
+/data/*.ls

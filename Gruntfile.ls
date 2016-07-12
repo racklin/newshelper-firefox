@@ -10,11 +10,11 @@ module.exports = (grunt) ->
     shell:
       run:
         options: {+stdout, +stderr}
-        command: 'cfx run'
+        command: 'jpm run'
 
       xpi:
         options: {+stdout, +stderr}
-        command: 'cfx xpi'
+        command: 'jpm xpi'
 
 
     lsc:

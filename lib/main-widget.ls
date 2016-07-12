@@ -13,10 +13,11 @@ newshelper-panel.port.on \resizeHeight, (height) ->
   newshelper-panel.height = height+30;
 
 
-newshelper-widget = Widget do
+newshelper-widget = ActionButton do
   id: \newshelper-icon
   label: "新聞小幫手"
-  contentURL: newshelper-widget-icon
+  icon: do
+    '64': newshelper-widget-icon
   panel: newshelper-panel
   on-click: ->
     newshelper-panel.port.emit \refreshContent, last-active-tab-result

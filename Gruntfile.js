@@ -12,14 +12,14 @@
             stdout: true,
             stderr: true
           },
-          command: 'cfx run'
+          command: 'jpm run'
         },
         xpi: {
           options: {
             stdout: true,
             stderr: true
           },
-          command: 'cfx xpi'
+          command: 'jpm xpi'
         }
       },
       lsc: {
