@@ -1,11 +1,11 @@
 {
-  "name": "newshelper-firefox",
-  "fullName": "newshelper-firefox",
+  "name": "newshelper",
+  "fullName": "newshelper",
   "id": "newshelper-firefox@g0v.tw",
-  "description": "新聞小幫手 Firefox 版 ",
+  "description": "新聞小幫手",
   "author": "racklin@gmail.com",
   "license": "CC0",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "icon": "icon.png",
   "icon64": "icon64.png",
   "main": "lib/main.js",
@@ -52,6 +52,9 @@
     "LiveScript": "~1.2.0",
     "grunt-lsc": "~1.0",
     "grunt-shell": "~0.3.1"
+  },
+  "permissions": {
+    "multiprocess": true
   }
 
 }
