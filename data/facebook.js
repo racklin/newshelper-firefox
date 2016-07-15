@@ -25,9 +25,9 @@
       var censorFacebookNode;
       censorFacebookNode = function(containerNode, titleText, linkHref, rule){
         var matches, addedAction;
-        matches = ("" + linkHref).match("^http://www.facebook.com/l.php\\?u=([^&]*)");
+        matches = ("" + linkHref).match("^http://(l|www).facebook.com/l.php\\?u=([^&]*)");
         if (matches) {
-          linkHref = decodeURIComponent(matches[1]);
+          linkHref = decodeURIComponent(matches[2]);
         }
         matches = ('' + linkHref).match('(.*)[?&]fb_action_ids=.*');
         if (matches) {
@@ -201,7 +201,7 @@
         userContent = $(userContent);
         titleText = userContent.find('a').text();
         linkHref = userContent.find('a').attr('href');
-        return censorFacebookNode(userContent.parents('._2r3x').find('._6m3').parents('._6m2').parent(), serContent, titleText, linkHref, 'rule7');
+        return censorFacebookNode(userContent.parents('._2r3x').find('._6m3').parents('._6m2').parent(), titleText, linkHref, 'rule7');
       });
     };
     buildActionBar = function(options){
@@ -275,10 +275,10 @@
         return;
       }
       return timer_ = setInterval(function(){
-        var target;
-        target = document.getElementById('contentArea' != null
-          ? 'contentArea'
-          : document.getElementById('content'));
+        var target, ref$;
+        target = (ref$ = document.getElementById('contentArea')) != null
+          ? ref$
+          : document.getElementById('content');
         if (target) {
           clearInterval(timer_);
           censorFacebook(target);

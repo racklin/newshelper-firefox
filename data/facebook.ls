@@ -28,8 +28,8 @@ let $ = jQuery
     # add warning message to a Facebook post if necessary
     censorFacebookNode = (containerNode, titleText, linkHref, rule) ->
 
-      matches = ("" + linkHref).match("^http://www.facebook.com/l.php\\?u=([^&]*)")
-      linkHref = decodeURIComponent(matches[1])  if matches
+      matches = ("" + linkHref).match("^http://(l|www).facebook.com/l.php\\?u=([^&]*)")
+      linkHref = decodeURIComponent(matches[2])  if matches
       # 處理 被加上 ?fb_action_ids=xxxxx 的情況
       matches = ('' + linkHref).match('(.*)[?&]fb_action_ids=.*');
       linkHref = matches[1] if matches
@@ -162,7 +162,7 @@ let $ = jQuery
       userContent = $ userContent
       titleText = userContent .find \a .text!
       linkHref = userContent .find \a .attr \href
-      censorFacebookNode userContent.parents('._2r3x').find('._6m3').parents('._6m2').parent!,serContent, titleText, linkHref, \rule7
+      censorFacebookNode userContent.parents('._2r3x').find('._6m3').parents('._6m2').parent!, titleText, linkHref, \rule7
 
 
   buildActionBar = (options) ->
@@ -218,7 +218,7 @@ let $ = jQuery
     # The contentArea is filled via AJAX.
     # Only need to call censorFacebook() after contentArea is present
     timer_ = setInterval ->
-      target = document.getElementById \contentArea ? document.getElementById \content
+      target = document.getElementById('contentArea') ? document.getElementById('content')
       if target
         clearInterval timer_
         censorFacebook target
