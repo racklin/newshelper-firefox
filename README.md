@@ -17,6 +17,12 @@ Development
 -------
 開發時可以至 https://www.facebook.com/新聞小幫手測試專用-494676360619618 測試本套件。
 
+```
+# install nodejs
+npm i -g web-ext
+web-ext run -u https://www.facebook.com/新聞小幫手測試專用-494676360619618
+```
+
 License
 -------
 MIT http://g0v.mit-license.org/
