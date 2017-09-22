@@ -63,10 +63,6 @@
     map_csv_path = path;
   };
 
-  exports.setCSVMap = function(csvContent) {
-    csvmap = csvContent.split("\n").map(function(line){ return line.split(','); });
-  };
-
   exports.getCSVMap = function(cb){
     if (null !== csvmap) {
       return cb(csvmap);
@@ -84,6 +80,11 @@
       };
       csvFile.send('');
     } else {
+      var fs = require('fs');
+      fs.readFile('map.csv', 'ascii', function(err, data){
+        csvmap = data.split("\n").map(function(line){ return line.split(','); });
+        cb(csvmap);
+      });
     }
   },
 
@@ -97,11 +98,12 @@
         query: a_dom.search.length ? a_dom.search.substr(1) : ''
       };
     } else {
-      var u = require('sdk/url').URL(url);
+      var u = require('url');
+      var parts = u.parse(url);
       return {
-        pathname: decodeURIComponent(u.path),
-        hostname: u.host,
-        query: u.search
+        pathname: decodeURIComponent(parts.pathname),
+        hostname: parts.hostname,
+        query: parts.query
       };
     }
   };
