@@ -4,7 +4,7 @@
 
   "name": "新聞小幫手",
   "description": "協助您判別含有誤導資訊的新聞",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "racklin@gmail.com",
 
   "permissions": [

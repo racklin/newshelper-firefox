@@ -1,12 +1,14 @@
 新聞小幫手
 ==========
-協助您判別含有誤導資訊的新聞，目前仍屬測試版。
+協助您判別含有誤導資訊的新聞。
+
+### ** 目前本版本已不再維護，請使用 g0v/newshelper-extension 版本 **
 
 
 Download
 --------
 * [Chrome 瀏覽器擴充元件](https://chrome.google.com/webstore/detail/%E6%96%B0%E8%81%9E%E5%B0%8F%E5%B9%AB%E6%89%8B/hkenpfplphndcndhhhldecaammpmopoc)
-* [Firefox 瀏覽器擴充元件](https://addons.mozilla.org/zh-TW/firefox/addon/newshelper-firefox/)
+* [Firefox 瀏覽器擴充元件](https://addons.mozilla.org/zh-TW/firefox/addon/newshelper/)
 
 
 Backend
